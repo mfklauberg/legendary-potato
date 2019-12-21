@@ -1,0 +1,13 @@
+.c-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  letter-spacing: .1px;
+  text-align: center;
+}
