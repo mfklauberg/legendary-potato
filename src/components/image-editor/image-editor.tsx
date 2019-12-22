@@ -168,28 +168,29 @@ class ImageEditor extends Component<Props, State> {
     };
   };
 
-  onBlurClick = (): void => {
-    const { blurStrength } = this.state;
-
+  applyFilter = (filter: fabric.IBaseFilter): void => {
     const image = this.getImage();
     this.clearImageFilters(image);
 
-    // @ts-ignore - missing Blur filter annotation
-    const blurFilter = new fabric.Image.filters.Blur({
-      blur: blurStrength
-    });
-
-    image.filters?.push(blurFilter);
+    image.filters?.push(filter);
     image.applyFilters();
 
     this.canvas.renderAll();
   };
 
+  onBlurClick = (): void => {
+    const { blurStrength } = this.state;
+
+    // @ts-ignore - missing Blur filter annotation
+    const filter = new fabric.Image.filters.Blur({
+      blur: blurStrength
+    });
+
+    this.applyFilter(filter);
+  };
+
   onSepiaClick = (): void => {
     const { sepiaStrength: strength } = this.state;
-
-    const image = this.getImage();
-    this.clearImageFilters(image);
 
     // There's a Sepia filter built in the Fabric library, but to control its strength, we have to
     // use a ColorMatrix with the original matrix values multiplied by the strength varying 1 to n.
@@ -202,17 +203,11 @@ class ImageEditor extends Component<Props, State> {
       ]
     });
 
-    image.filters?.push(filter);
-    image.applyFilters();
-
-    this.canvas.renderAll();
+    this.applyFilter(filter);
   };
 
   onVintageClick = (): void => {
     const { vintageStrength: strength } = this.state;
-    const image = this.getImage();
-
-    this.clearImageFilters(image);
 
     // There's a Vintage filter built in the Fabric library, but to control its strength, we have to
     // use a ColorMatrix with the original matrix values multiplied by the strength varying 1 to n.
@@ -225,56 +220,34 @@ class ImageEditor extends Component<Props, State> {
       ],
     });
 
-    image.filters?.push(filter);
-    image.applyFilters();
-
-    this.canvas.renderAll();
+    this.applyFilter(filter);
   };
 
   onPixelizationClick = (): void => {
     const { pixelizationStrength } = this.state;
-    const image = this.getImage();
-
-    this.clearImageFilters(image);
 
     const filter = new fabric.Image.filters.Pixelate({
       blocksize: pixelizationStrength
     });
 
-    image.filters?.push(filter);
-    image.applyFilters();
-
-    this.canvas.renderAll();
+    this.applyFilter(filter);
   };
 
   onSaturationClick = (): void => {
     const { saturationStrength } = this.state;
-    const image = this.getImage();
-
-    this.clearImageFilters(image);
 
     const filter = new fabric.Image.filters.Saturation({
       saturation: saturationStrength
     });
 
-    image.filters?.push(filter);
-    image.applyFilters();
-
-    this.canvas.renderAll();
+    this.applyFilter(filter);
   };
 
   onBlackAndWhiteClick = (): void => {
-    const image = this.getImage();
-
-    this.clearImageFilters(image);
-
-    // @ts-ignore - missing Blur filter annotation
+    // @ts-ignore - missing BlackWhite filter annotation
     const filter = new fabric.Image.filters.BlackWhite();
 
-    image.filters?.push(filter);
-    image.applyFilters();
-
-    this.canvas.renderAll();
+    this.applyFilter(filter);
   };
 
   renderControls(): null | ReactElement {
