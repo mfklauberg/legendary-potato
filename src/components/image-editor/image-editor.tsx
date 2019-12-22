@@ -126,6 +126,13 @@ class ImageEditor extends Component<Props, State> {
 
     const dataFormat = `image/${fileformat}`;
 
+    const defaultFilename = `${filename}-${new Date().toISOString()}.${fileformat}`;
+    const newFilename = window.prompt('Save file as:', defaultFilename);
+
+    if (newFilename === null) {
+      return;
+    }
+
     const image = this.getImage();
     const height = image.height as number;
     const width = image.width as number;
@@ -138,11 +145,8 @@ class ImageEditor extends Component<Props, State> {
 
     const blob = dataToBlob(data);
 
-    const defaultFilename = `${filename}-${new Date().toISOString()}.${fileformat}`;
-    const newFilename = window.prompt('Save file as:', defaultFilename);
-
     const link = document.createElement('a');
-    link.download = newFilename || defaultFilename;
+    link.download = newFilename;
     link.href = URL.createObjectURL(blob);
     link.onclick = () => {
       requestAnimationFrame(() => {
