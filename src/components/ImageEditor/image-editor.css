@@ -1,0 +1,29 @@
+.c-image-editor {
+  padding: .5rem;
+}
+
+.c-image-editor__file {
+  font-size: 1.75rem;
+  color: #C4C4C4;
+}
+
+.c-image-editor__content {
+  display: flex;
+  margin-top: .5rem;
+}
+
+.c-image-editor__controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: .5rem;
+}
+
+.c-image-editor__controls .c-button {
+  width: 100%;
+  margin-bottom: .5rem
+}
+
+.c-image-editor__canvas {
+
+}
