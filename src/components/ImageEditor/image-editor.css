@@ -24,6 +24,19 @@
   margin-bottom: .5rem
 }
 
-.c-image-editor__canvas {
+.c-image-editor__controls-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: .5rem;
+}
 
+.c-image-editor__controls-item input {
+  margin-bottom: .5rem;
+}
+
+.c-image-editor__label {
+  font-size: 1.25rem;
+  color: #C4C4C4;
+  margin-bottom: .5rem;
 }
