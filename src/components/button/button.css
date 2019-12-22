@@ -6,8 +6,14 @@
   width: max-content;
   height: 2.5rem;
   padding: 0 1rem;
-  border-radius: 3px;
-  font-size: 0.875rem;
+  border-radius: 2px;
+  font-size: 0.75rem;
   letter-spacing: .1px;
   text-align: center;
+
+  color: #FFFFFF;
+  background-color: #5A9ADA;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-width: 0;
 }

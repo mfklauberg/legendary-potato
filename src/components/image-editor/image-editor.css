@@ -4,7 +4,7 @@
 
 .c-image-editor__file {
   font-size: 1.75rem;
-  color: #C4C4C4;
+  color: #FFFFFF;
 }
 
 .c-image-editor__content {
@@ -37,6 +37,6 @@
 
 .c-image-editor__label {
   font-size: 1.25rem;
-  color: #C4C4C4;
+  color: #FFFFFF;
   margin-bottom: .5rem;
 }
