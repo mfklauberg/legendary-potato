@@ -146,6 +146,14 @@ class ImageEditor extends Component<Props, State> {
     link.click();
   };
 
+  onRemoveFiltersClick = (): void => {
+    const image = this.getImage();
+    this.clearImageFilters(image);
+
+    image.applyFilters();
+    this.canvas.renderAll();
+  };
+
   onChangeStrength = (property: string) => {
     return (event: ChangeEvent<HTMLInputElement>): void => {
       const value = Number(event.target.value);
@@ -228,6 +236,7 @@ class ImageEditor extends Component<Props, State> {
     return (
       <div className="c-image-editor__controls">
         <Button onClick={this.onDownloadClick} value="Download" />
+        <Button onClick={this.onRemoveFiltersClick} value="Remove Filters" />
 
         <span className="c-image-editor__label">Filters:</span>
 
