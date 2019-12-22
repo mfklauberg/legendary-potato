@@ -44,7 +44,7 @@ class ImageEditor extends Component<Props, State> {
 
   state = {
     blurStrength: 0,
-    pixelizationStrength: 0,
+    pixelizationStrength: 2,
     saturationStrength: 0,
     sepiaStrength: 1,
     vintageStrength: 1
@@ -284,7 +284,7 @@ class ImageEditor extends Component<Props, State> {
         </div>
 
         <div className="c-image-editor__controls-item">
-          <input type="range" value={pixelizationStrength} min="0" max="50" step="1" onChange={this.onChangeStrength('pixelizationStrength')} />
+          <input type="range" value={pixelizationStrength} min="2" max="50" step="1" onChange={this.onChangeStrength('pixelizationStrength')} />
           <Button onClick={this.onPixelizationClick} value="Apply Pixelization" />
         </div>
 
