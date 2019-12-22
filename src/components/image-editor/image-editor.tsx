@@ -40,7 +40,7 @@ class ImageEditor extends Component<Props, State> {
   private canvas!: fabric.Canvas;
   private canvasRef = createRef<HTMLCanvasElement>();
 
-  private objectScale = .25;
+  private objectScale = .5;
 
   state = {
     blurStrength: 0,
