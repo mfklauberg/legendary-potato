@@ -138,8 +138,11 @@ class ImageEditor extends Component<Props, State> {
 
     const blob = dataToBlob(data);
 
+    const defaultFilename = `${filename}-${new Date().toISOString()}.${fileformat}`;
+    const newFilename = window.prompt('Save file as:', defaultFilename);
+
     const link = document.createElement('a');
-    link.download = `${filename}-${new Date().toISOString()}.${fileformat}`;
+    link.download = newFilename || defaultFilename;
     link.href = URL.createObjectURL(blob);
     link.onclick = () => {
       requestAnimationFrame(() => {
