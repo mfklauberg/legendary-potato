@@ -12,6 +12,8 @@ interface Props {
 
 interface State {
   blurStrength: number;
+  pixelizationStrength: number;
+  saturationStrength: number;
   sepiaStrength: number;
   vintageStrength: number;
   [key: string]: any;
@@ -42,6 +44,8 @@ class ImageEditor extends Component<Props, State> {
 
   state = {
     blurStrength: 0,
+    pixelizationStrength: 0,
+    saturationStrength: 0,
     sepiaStrength: 1,
     vintageStrength: 1
   };
@@ -56,9 +60,11 @@ class ImageEditor extends Component<Props, State> {
 
   shouldComponentUpdate(prevProps: Props, prevState: State): boolean {
     const { src } = this.props;
-    const { blurStrength, sepiaStrength, vintageStrength} = this.state;
+    const { blurStrength, pixelizationStrength, saturationStrength, sepiaStrength, vintageStrength } = this.state;
 
     if (blurStrength !== prevState.blurStrength) return true;
+    if (pixelizationStrength !== prevState.pixelizationStrength) return true;
+    if (saturationStrength !== prevState.saturationStrength) return true;
     if (sepiaStrength !== prevState.sepiaStrength) return true;
     if (vintageStrength !== prevState.vintageStrength) return true;
 
@@ -225,9 +231,55 @@ class ImageEditor extends Component<Props, State> {
     this.canvas.renderAll();
   };
 
+  onPixelizationClick = (): void => {
+    const { pixelizationStrength } = this.state;
+    const image = this.getImage();
+
+    this.clearImageFilters(image);
+
+    const filter = new fabric.Image.filters.Pixelate({
+      blocksize: pixelizationStrength
+    });
+
+    image.filters?.push(filter);
+    image.applyFilters();
+
+    this.canvas.renderAll();
+  };
+
+  onSaturationClick = (): void => {
+    const { saturationStrength } = this.state;
+    const image = this.getImage();
+
+    this.clearImageFilters(image);
+
+    const filter = new fabric.Image.filters.Saturation({
+      saturation: saturationStrength
+    });
+
+    image.filters?.push(filter);
+    image.applyFilters();
+
+    this.canvas.renderAll();
+  };
+
+  onBlackAndWhiteClick = (): void => {
+    const image = this.getImage();
+
+    this.clearImageFilters(image);
+
+    // @ts-ignore - missing Blur filter annotation
+    const filter = new fabric.Image.filters.BlackWhite();
+
+    image.filters?.push(filter);
+    image.applyFilters();
+
+    this.canvas.renderAll();
+  };
+
   renderControls(): null | ReactElement {
     const { src } = this.props;
-    const { blurStrength, sepiaStrength, vintageStrength } = this.state;
+    const { blurStrength, pixelizationStrength, saturationStrength, sepiaStrength, vintageStrength } = this.state;
 
     if (!src) {
       return null;
@@ -253,6 +305,20 @@ class ImageEditor extends Component<Props, State> {
         <div className="c-image-editor__controls-item">
           <input type="range" value={vintageStrength} min="1" max="2" step="0.1" onChange={this.onChangeStrength('vintageStrength')} />
           <Button onClick={this.onVintageClick} value="Apply Vintage" />
+        </div>
+
+        <div className="c-image-editor__controls-item">
+          <input type="range" value={pixelizationStrength} min="0" max="50" step="1" onChange={this.onChangeStrength('pixelizationStrength')} />
+          <Button onClick={this.onPixelizationClick} value="Apply Pixelization" />
+        </div>
+
+        <div className="c-image-editor__controls-item">
+          <input type="range" value={saturationStrength} min="0" max="1" step="0.1" onChange={this.onChangeStrength('saturationStrength')} />
+          <Button onClick={this.onSaturationClick} value="Apply Saturation" />
+        </div>
+
+        <div className="c-image-editor__controls-item">
+          <Button onClick={this.onBlackAndWhiteClick} value="Apply Black and White" />
         </div>
       </div>
     );
