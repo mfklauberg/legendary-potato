@@ -17,6 +17,23 @@ interface State {
   [key: string]: any;
 }
 
+
+function dataToBlob(data: string): Blob {
+  const [partA, partB] = data.split(',');
+
+  const byteString = atob(partB);
+  const mimeString = partA.split(':')[1].split(';')[0];
+
+  const buffer = new ArrayBuffer(byteString.length);
+  const integerArray = new Uint8Array(buffer);
+
+  for (let i = 0; i < byteString.length; i++) {
+    integerArray[i] = byteString.charCodeAt(i);
+  }
+
+  return new Blob([buffer], { type: mimeString });
+}
+
 class ImageEditor extends Component<Props, State> {
   private canvas!: fabric.Canvas;
   private canvasRef = createRef<HTMLCanvasElement>();
@@ -66,8 +83,8 @@ class ImageEditor extends Component<Props, State> {
 
       this.canvas.add(obj);
       this.canvas.setActiveObject(obj);
-      this.canvas.setHeight((image.height || 0) * this.objectScale);
-      this.canvas.setWidth((image.width || 0) * this.objectScale);
+
+      this.scaleCanvas(image.height as number, image.width as number, this.objectScale);
     });
   }
 
@@ -82,6 +99,11 @@ class ImageEditor extends Component<Props, State> {
     obj.lockSkewingY = true;
     obj.lockUniScaling = true;
   };
+
+  scaleCanvas = (height: number, width: number, scale: number): void => {
+    this.canvas.setHeight(height * scale);
+    this.canvas.setWidth(width * scale);
+  }
 
   clearImageFilters = (image: fabric.Image): void => {
     image.filters = [];
@@ -98,13 +120,29 @@ class ImageEditor extends Component<Props, State> {
 
     const dataFormat = `image/${fileformat}`;
 
+    const image = this.getImage();
+    const height = image.height as number;
+    const width = image.width as number;
+
+    image.scale(1);
+    this.scaleCanvas(height, width, 1);
+
     const data = this.canvas
-      .toDataURL({ format: dataFormat, multiplier: 1 })
-      .replace(dataFormat, 'image-octet-stream');
+      .toDataURL({ format: dataFormat, multiplier: 1 });
+
+    const blob = dataToBlob(data);
 
     const link = document.createElement('a');
     link.download = `${filename}-${new Date().toISOString()}.${fileformat}`;
-    link.href = data;
+    link.href = URL.createObjectURL(blob);
+    link.onclick = () => {
+      requestAnimationFrame(() => {
+        image.scale(this.objectScale);
+        this.scaleCanvas(height, width, this.objectScale)
+        URL.revokeObjectURL(link.href);
+      });
+    };
+
     link.click();
   };
 
